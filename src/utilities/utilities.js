@@ -7,10 +7,11 @@ export const fetchMovies = async function (
   setterLoading,
   setterError
 ) {
+  if (!query) return;
   try {
     setterLoading(true);
     const res = await fetch(
-      `http://www.omdbapi.com/?apikey=${key}&s="${query}"`
+      `https://www.omdbapi.com/?apikey=${key}&s="${query}"`
     );
     if (!res.ok) {
       throw new Error("Network response was not ok!");
@@ -32,7 +33,9 @@ export const fetchMovies = async function (
 
 export const fetchMovie = async function (movie, key, setterError) {
   try {
-    const res = await fetch(`http://www.omdbapi.com/?apikey=${key}&i=${movie}`);
+    const res = await fetch(
+      `https://www.omdbapi.com/?apikey=${key}&i=${movie}`
+    );
     if (!res.ok) {
       throw new Error("Network response was not ok!");
     }

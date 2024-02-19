@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fetchMovies, API_KEY } from "./utilities/utilities";
+import { useInputFocus } from "./useInputFocus.js";
 
 export default function Searchbar({
   setMovies,
@@ -7,6 +8,7 @@ export default function Searchbar({
   setErrorMessage,
 }) {
   const [query, setQuery] = useState("");
+  const inputElement = useInputFocus(setMovies);
 
   const onSearch = function (e) {
     e.preventDefault();
@@ -24,6 +26,7 @@ export default function Searchbar({
         placeholder="Search movies..."
         value={query}
         onChange={(e) => setQuery(e.target.value)}
+        ref={inputElement}
       />
     </form>
   );

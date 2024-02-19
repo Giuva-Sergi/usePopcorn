@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import Navbar from "./NavBar";
 import MainComponent from "./MainComponent";
 import Logo from "./Logo";
@@ -11,23 +11,26 @@ import MovieList from "./MovieList";
 import Loader from "./Loader";
 import ErrorMessage from "./ErrorMessage";
 import MovieDetails from "./MovieDetails";
+import { useLocalStorageState } from "./useLocalStorageState.js";
 
 export default function App() {
   const [movies, setMovies] = useState([]);
-  // const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedMovie, setSelectedMovie] = useState(null);
   const [userRating, setUserRating] = useState(null);
-  const [watched, setWatched] = useState(() => {
-    const storedMovies = JSON.parse(localStorage.getItem("watched"));
-    return storedMovies;
-  });
+  const [watched, setWatched] = useLocalStorageState("watched");
+  const ratingCount = useRef(0);
 
   const handleAddWatched = function (movie) {
-    const watchedMovie = { ...movie, userRating };
+    const watchedMovie = {
+      ...movie,
+      userRating,
+      ratingCount: ratingCount.current,
+    };
     setWatched((prevArray) => [...prevArray, watchedMovie]);
     setUserRating(null);
+    ratingCount.current = 0;
   };
 
   const handleDeleteWatched = function (movie) {
@@ -35,10 +38,6 @@ export default function App() {
       watched.filter((watchedMovie) => watchedMovie.imdbID !== movie.imdbID)
     );
   };
-
-  useEffect(() => {
-    localStorage.setItem("watched", JSON.stringify(watched));
-  }, [watched]);
 
   return (
     <>
@@ -74,6 +73,7 @@ export default function App() {
               userRating={userRating}
               onSetRating={setUserRating}
               watched={watched}
+              count={ratingCount}
             />
           ) : (
             <>

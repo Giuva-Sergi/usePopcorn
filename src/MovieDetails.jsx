@@ -1,5 +1,6 @@
 import StarRating from "./StarRating.jsx";
 import { useEffect } from "react";
+import { useKey } from "./useKey.js";
 
 export default function MovieDetails({
   selectedMovie,
@@ -8,6 +9,7 @@ export default function MovieDetails({
   userRating,
   onSetRating,
   watched,
+  count,
 }) {
   const {
     Title: title,
@@ -33,13 +35,7 @@ export default function MovieDetails({
     return () => (document.title = "usePopcorn");
   }, [selectedMovie]);
 
-  useEffect(() => {
-    const handleEscapeKey = function (e) {
-      if (e.code === "Escape") onSelectedMovie(null);
-    };
-    document.addEventListener("keydown", handleEscapeKey);
-    return () => document.removeEventListener("keydown", handleEscapeKey);
-  }, []);
+  useKey("Escape", onSelectedMovie);
 
   return (
     <div className="details">
@@ -71,6 +67,7 @@ export default function MovieDetails({
                 size={24}
                 onSetRating={onSetRating}
                 rating={userRating}
+                count={count}
               />
               {userRating > 0 ? (
                 <button

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 const container = {
@@ -28,12 +28,11 @@ export default function StarRating({
   defaultRating = 0,
   rating,
   onSetRating,
+  count = count,
 }) {
-  // const [rating, setRating] = useState(defaultRating);
   const [hoveredValue, setHoveredValue] = useState(null);
 
   const handleRating = function (value) {
-    // setRating(value);
     onSetRating(value);
   };
 
@@ -44,6 +43,11 @@ export default function StarRating({
   const handleMouseLeave = function () {
     setHoveredValue(null);
   };
+
+  useEffect(() => {
+    if (!rating) return;
+    count.current++;
+  }, [rating]);
 
   const textContainer = {
     lineHeight: "1",
