@@ -1,5 +1,5 @@
 import { useState, useRef } from "react";
-import Navbar from "./NavBar";
+import Navbar from "./Navbar";
 import MainComponent from "./MainComponent";
 import Logo from "./Logo";
 import Searchbar from "./Searchbar";
